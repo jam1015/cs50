@@ -14,12 +14,15 @@ int main(void)
 	int letter_count = count_letters(text_in);
 	int word_count = count_words(text_in);
 	int sentence_count = count_sentences(text_in);
-	float index = ((100.0 / word_count)*(0.0588 * letter_count - 0.296 * sentence_count)) - 15.8;
+
+    float L = (letter_count * 100.0) / word_count;
+	float S = (sentence_count * 100.0) / word_count;
+	float index = 0.0588 * L - 0.296 * S  - 15.8;
 	index = round(index);
 
 	if (index < 1) 
 	{
-		printf("Before Grade 1");
+		printf("Before Grade 1\n");
 	} 
 	else if ( index >= 16)
 	{
@@ -39,7 +42,7 @@ int count_letters(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if((char_used >= 65 && char_used <= 90) || (char_used >= 97 && char_used <= 122))
+		if(isalpha(char_used))
 		{
 			letter_count++;
 		}
@@ -56,14 +59,14 @@ int count_words(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if(char_used == ' '  )
+		if(isspace(char_used))
 		{
 			space_count++;
 		}
 	}
 	int word_count = space_count + 1;
 
-	return space_count;
+	return word_count;
 }
 
 int count_sentences(string text_used)
@@ -74,7 +77,7 @@ int count_sentences(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if(char_used == '.' || char_used == '?' || char_used == "!"  )
+		if(char_used == '.' || char_used == '?' || char_used == '!')
 		{
 			sentence_count++;
 		}
