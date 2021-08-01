@@ -1,0 +1,219 @@
+& figures out address
+* gets content at the address
+
+pointers
+======================
+the variable is called int *p
+
+int n = 50;
+int *p = &n; //holds the address of n
+printf("%p\n",p); //prints the pointer
+printf("%i\n",*p); //prints the actual character
+
+pointers take up 8 bytes
+
+passing a string passes the address of the first character;
+you don't return a string, it is passed by reference instead of value
+
+printf("%s\n", s) prints string 
+printf("%p\n", s) prints address of first element
+printf("%p\n", s[0]) prints address of first element
+printf("%p\n",s[1]) prints address of second element
+
+char *s  means the address of a character
+char *s = "HI!" //is just a string but is really just a pointer to the first array index
+
+we used:
+typedef char *string //
+
+char *s = "HI!" //remember a string is really just a pointer to the first element 
+//this prints the various elements of an array
+printf("%c\n", *s); //* is getting the contents
+printf("%c\n", *(s+1));
+printf("%c\n", *(s+2)); \\ can use bracket notation on strings declared this way
+
+segmentation fault means that we touched memory we shouldn't have
+
+//because these strings point to the same memory changing one also changes the other
+//uppercasing t[0] also uppercases s[0] because they point to the same address in memory
+char *s = get_string("s: ");
+char *t = s;
+t[0] = touppper[0]);
+printf("s ...
+printf("t ...
+
+===============
+//malloc just allocates memory to a variable in bytes
+
+//we have to go for strlen + 1 for allocating string because strlen doesn't include the null character
+===============
+char *t = malloc(strlen(s) + 1)
+
+if(t == NULL){ //incase malloc fails: NUL is the \0 character, different thing
+return 1;
+}
+
+for(int i = 0, n = strlen(s) + 1; i < n + 1; i++_
+{
+t[i] = s[i]
+//could also do *(t + i) = *(s + i);
+}
+
+//could just do strcpy strcpy(s,t)
+
+if (strlen(t) > 0)
+{
+t[0] = toupper(t[0]);
+//*t = toupper(*t);
+}
+
+free(t); \\have to return the memory; we have to use it after strcpy
+
+return
+======================
+have to do #include <stdlib.h>
+we also declare the type of a malloc
+
+t[i] = s[i] is equivalent to *(t + i) = *(s + i)
+
+*t = toupper(*t)
+is the same as t[0] = toupper(t[0])
+
+*************** valgrnd
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) // we have an invalid write here because we've writ to the fourth byte
+{
+	char *s = malloc(3);
+	s[0] = 'H';
+	s[1] = 'I';
+	s[2] = '!';
+	s[3] = '\0';
+	printf("%s\n", s) //invalid read
+	//didn't free(s) so that's a memory leak
+}
+
+**************
+valgrind ./memory
+
+
+here's another problem;
+
+int main(void)
+{
+	int *x;
+	int *y;
+
+	x = malloc(sizeof(int)); //x gets a specific address
+
+if(x == NULL){ //incase malloc fails: NUL is the \0 character, different thing
+return 1;
+}
+	*x = 42; //remember that *x is counterintutitvly a pointer
+	*y = 13; // but we haven't allocated memory to it; might write to a random place
+	 
+	 y = x;
+
+	 *y = 13;
+}
+***********
+
+#include <stdio.h>
+
+int main(void)
+{
+	int scores[3];
+	for (int i = 0; i < 3; i++)
+	{
+	printf("%i\n", scores[i])
+	}
+}
+
+****
+global variables are initiallized to null or zero but we shouldn't rely on it
+
+#include <stdio.h>
+********** THIS WONT WORK
+void swap(int a, int b);
+
+******* #to actually switch we need to use pointers
+#include <stdio.h>
+
+void swap(int *a, int *b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(&x, &y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int *a, int *b) //remember that these are pointers and in code * dererferences
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+
+
+#memory is treated in a unique way
+program itself is top of memory; next globals; then the heap, which is what malloc uses
+heap (used by malloc)----->       <----- stack (used by functions, main is at bottom)
+
+*** to actually change x and y we could pass pointers instead of the actual thing
+
+heap overflow/stack overflow heap overflow is actually called buffer overflow
+buffer overflow is when you go beyond what you've malloced or have filled an array with
+
+
+*************************************
+
+fscan
+
+#include <stdio.h>
+
+int main(void)
+{
+	int x;
+	printf("x: ");
+	scanf("%i", &x);
+	printf("x: %i\n", x);
+}
+
+------------------------------
+#include <stdio.h>
+int main(void)
+{
+	char *s = malloc(4); // or chars[4]//we need to use malloc not just declare
+	printf("s: ");
+	scanf("%s" s);
+	printf("s: %s\n", s);
+}
+-----------------------------
+there is no error checking here
+
+
+-----------------------
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+	FILE *file = fopen("phonebook.csv", "a"); //in append mode
+	if(file == null){return};
+	char *name = get_string("Name: ");
+	char *number = get_string("Number: "0);
+	frpintf(file, "%s,%s\n", name, number);
+
+	fclose(file);
+	}
+-----------------------------------
+Pointers short
+
+

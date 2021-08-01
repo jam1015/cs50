@@ -6,7 +6,7 @@ int main(void)
 	do 
 	{
 		height = get_int("Start size: ");
-	} while (height > 8 || height < 1);
+	} 	while (height > 8 || height < 1);
 
 	for (int row = 0; row < height; row++) 
 	{
