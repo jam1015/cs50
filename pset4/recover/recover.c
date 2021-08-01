@@ -1,7 +1,8 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdint.h>
+#include <ctype.h>
 /*
 
  start writing to file when we find a jpeg, close when we find another, start
