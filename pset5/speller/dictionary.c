@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 //converts ascii letter vals to be from 0 to 25, or 26 if it's a '
 char convert_ascii(char char_in)
 {
