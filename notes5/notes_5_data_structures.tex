@@ -1,0 +1,122 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{CS50 Lecture 5: Data Structures}
+\author{Jordan Mandel}
+\date{today}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={CS50 Lecture 5: Data Structures},
+  pdfauthor={Jordan Mandel},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1cm]{geometry}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+To build:
+
+\hypertarget{linkedlists}{%
+\section{LinkedLists}\label{linkedlists}}
+
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  typedef struct node \\ we use the word node twice here
+  {
+  int number;
+  struct node *next;
+  }
+  node;
+}
+\end{verbatim}
+
+We can reallocate memory using ralloc
+
+\begin{verbatim}
+int *tmp = realloc(list, 4 * sizeof(int));
+\end{verbatim}
+
+In this case we are allocating more memory and copying the contents of
+the old memory over and then we are freeing the memory that list
+originally pointed to.
+
+\texttt{a-\textgreater{}b} is the same as \texttt{(*a).b}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{list\ -\/-\/-\textgreater{}\ NULL(node:\ (number,\ *next))\ \textbar{}\textbar{}\textbar{}\textbar{}\ node\ *list\ =\ NULL}
+\item
+  \texttt{list\ -\/-\/-\textgreater{}\ NULL(node:\ (number,\ *next)),\ n\ -\/-\/-\textgreater{}\ node(number,\ *next)\ \ node*\ n\ =\ malloc(sizeof(node))}
+\item
+  \texttt{list\ -\/-\/-\textgreater{}\ NULL(node:\ (number,\ *next)),\ n\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ NULL)\ n-\textgreater{}number=1,n-\textgreater{}next=NULL}
+\item
+  \texttt{(list,\ n)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ NULL)\ list\ =\ n}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ NULL),\ n\ -\/-\/-\textgreater{}\ node(number\ ,\ *next\ )\ n\ =\ malloc(sizeof(node))}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ NULL),\ n\ -\/-\/-\textgreater{}\ node(number\ =\ 2,\ *next\ =\ NULL)\ \textbar{}\textbar{}\textbar{}\textbar{}\ n-\textgreater{}number\ =\ 2,\ n\ -\textgreater{}next\ =\ NULL}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ n),\ n\ -\/-\/-\textgreater{}\ node(number\ =\ 2,\ *next\ =\ NULL)}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ {[}second{]}),\ {[}second{]}\ -\/-\/-\textgreater{}\ node(number\ =\ 2,\ *next\ =\ NULL)\ n\ -\/-\/-\textgreater{}\ node(number,\ *next)}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ {[}second{]}),\ {[}second{]}\ -\/-\/-\textgreater{}\ node(number\ =\ 2,\ *next\ =\ NULL)\ n\ -\/-\/-\textgreater{}\ node(3,\ NULL)}
+\item
+  \texttt{(list)\ -\/-\/-\textgreater{}\ node(number\ =\ 1,\ *next\ =\ {[}second{]}),\ {[}second{]}\ -\/-\/-\textgreater{}\ node(number\ =\ 2,\ *next\ =\ n)\ n\ -\/-\/-\textgreater{}\ node(3,\ NULL)}
+\end{enumerate}
+
+\hypertarget{trees}{%
+\section{Trees}\label{trees}}
+
+Lala
+
+\end{document}
