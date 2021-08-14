@@ -35,6 +35,7 @@ typedef struct node
 } node;
 
 // Number of buckets in hash table
+const unsigned int NUM_CHARS=3;
 const unsigned int N = 19683;
 int word_count = 0;
 
@@ -88,7 +89,7 @@ unsigned int hash(const char *word)
 		}
 
 	} while (counter < NUM_CHARS && letter != '\0');
-	hash_val = hash_val % ((int)pow(27, 3));
+	hash_val = hash_val % ((int) N);
 	return hash_val;
 }
 
