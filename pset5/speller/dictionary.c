@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-//converts ascii letter vals to be from 0 to 25, or 26 if it's a '
+// converts ascii letter vals to be from 0 to 25, or 26 if it's a '
 char convert_ascii(char char_in)
 {
 	if (char_in == 27)
@@ -35,40 +35,40 @@ typedef struct node
 } node;
 
 // Number of buckets in hash table
-const unsigned int NUM_CHARS=3;
+const unsigned int NUM_CHARS = 3;
 const unsigned int N = 19683;
 int word_count = 0;
 
 // Hash table
 node *table[N];
 
-void add_node(int index_in, node *table_in[], node *node_in)
-{
-	node_in->next = table_in[index_in];
-	table_in[index_in] = node_in;
-}
-//
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
 	// TODO
+	// printf("checking %s ||| ", word);
 	int index = hash(word);
+	// printf("hashed to %i |||", index);
 	bool found = false;
 	node *list_used = table[index];
 	if (list_used == NULL)
 	{
+		// printf("MISSING\n");
 		return false;
 	}
 
-	while (list_used->next != NULL)
+	while (list_used != NULL)
 	{
-		found = strcasecmp(list_used->word, word);
+		////printf(" ca %s |||", list_used->word);
+		found = strcasecmp(list_used->word, word) == 0;
 		if (found)
 		{
+			// printf(" FOUND\n");
 			return true;
 		}
 		list_used = list_used->next;
 	}
+	// printf(" MISSING\n");
 	return false;
 }
 
@@ -76,6 +76,7 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
 	// TODO
+	// printf("hashing %s ||| ", word);
 	int counter = 0;
 	char letter;
 	int hash_val = 0;
@@ -89,7 +90,7 @@ unsigned int hash(const char *word)
 		}
 
 	} while (counter < NUM_CHARS && letter != '\0');
-	hash_val = hash_val % ((int) N);
+	hash_val = hash_val % ((int)N);
 	return hash_val;
 }
 
@@ -117,15 +118,21 @@ bool load(const char *dictionary)
 		if (new_node == NULL)
 		{
 			free(new_node);
+			free(word_vec);
 			return false;
 		}
+
+		// printf("loading %s ||| ", word_vec);
 		hash_val = hash(word_vec);
+		// printf("hashed to %i\n", hash_val);
+
 		strcpy(new_node->word, word_vec);
-		new_node->next = NULL;
-		add_node(hash_val, table, new_node);
+		new_node->next = table[hash_val];
+		table[hash_val] = new_node;
 		word_count++;
 	}
 
+	fclose(dict_file);
 	free(word_vec);
 	return true;
 }
@@ -137,75 +144,25 @@ unsigned int size(void)
 	return word_count;
 }
 
-bool free_list_recursive(node *list_in)
-{
-	bool success = false;
-	if ((list_in->next) != NULL)
-	{
-		success = free_list_recursive(list_in->next);
-	}
-
-	if (success)
-	{
-		free(list_in);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool free_list(node *list_in)
-{
-	node *cursor = malloc(sizeof(node));
-	if (cursor == NULL)
-	{
-		printf("allocation failed");
-		free(cursor);
-		return false;
-	}
-	while (list_in->next != NULL)
-	{
-		//printf("%s", list_in->word);
-		//cursor = list_in->next;
-		//free(list_in);
-		//list_in = cursor;
-		list_in = list_in->next;
-	}
-	free(cursor);
-	return true;
-}
-
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void)
 {
 	// TODO
-	node *cursor = malloc(sizeof(node));
-	if (cursor == NULL)
-	{
-		printf("allocation failed");
-		free(cursor);
-		return false;
-	}
+	node *cursor = NULL;
+
 	node *list_in;
 	for (int i = 0; i < N; i++)
 	{
-		//printf("%i\n", i);
-		//printf("%i\n", N);
-		//	free_list(table[i]);
 		list_in = table[i];
-		if (list_in != NULL)
+
+		while (list_in != NULL)
 		{
-			while (list_in->next != NULL)
-			{
-				//printf("%s\n", list_in->word);
-				cursor = list_in->next;
-				free(list_in);
-				list_in = cursor;
-			}
+			// printf("Unloading index %i	", i);
+			// printf("Unloading node: %s\n", list_in->word);
+			cursor = list_in->next;
+			free(list_in);
+			list_in = cursor;
 		}
 	}
-	free(cursor);
 	return true;
 }
