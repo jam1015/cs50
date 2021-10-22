@@ -52,9 +52,20 @@ while i < 3:
 for i in [0, 1, 2]: // this is like a list
 	print("cough")
 ```
-
 `range(3)` gives `[0, 1, 2]`
 `range(0, 101, 2)` goes from `0` to `100` in increments of `2`.
+
+### Instead of do-while
+
+```
+def get_positive_int():
+	while True:
+		n = get_int("Positive Integer: ")
+		if n > 0:
+			break
+	return n
+```
+
 
 we can print an integer with print `i`.
 
@@ -578,6 +589,26 @@ class Student(): # have to include the  self keyword
 		print("{} - {}".format(self.name, self.id))
 ```
 
-We can go ```import cs50``` and then be like ```cs50.get_int()```
+We can go `import cs50` and then be like `cs50.get_int()`
 
-- can include shebang ```#!/usr/bin/env python3``` to just invoke the file without prepending ```python3```.
+- can include shebang `#!/usr/bin/env python3` to just invoke the file without prepending `python3`.
+
+# Additional Notes
+
+## Subsitute for %in% operator
+
+```
+x = [2, 3, 5] 
+y = [1, 2, 3]
+
+# for loop
+for i in x: [].append(i in y)
+
+Out: [True, True, False]
+
+
+# list comprehension
+[i in y for i in x]
+
+Out: [True, True, False]
+```

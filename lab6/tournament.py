@@ -1,12 +1,10 @@
 # Simulate a sports tournament
-
 import csv
 import sys
 import random
 
 # Number of simluations to run
 N = 1000
-
 
 def main():
 
@@ -28,10 +26,11 @@ def main():
 	# TODO: Simulate N tournaments and keep track of win counts
 	for i in range(N):
 		winner = simulate_tournament(teams)
-		if not winner["team"] in counts:
-			counts[winner["team"]] = 0
+		if not winner in counts:
+			counts[winner] = 1
 		else:
-			counts[winner["team"]] += 1
+			counts[winner] += 1
+	#print(counts)
 
 
 	# Print each team's chances of winning, according to simulation
@@ -68,7 +67,8 @@ def simulate_tournament(teams):
 	# TODO
 	while len(teams) > 1:
 		teams = simulate_round(teams)
-	return teams[0]
+	#print(teams)
+	return teams[0]["team"]
 
 
 if __name__ == "__main__":
