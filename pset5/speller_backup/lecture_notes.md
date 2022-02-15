@@ -1,1 +1,5 @@
+XSym
+0039
+acbde8156c13e12b3b85f365e2a4bd18
 ../../notes5/notes_5_data_structures.md
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+function greet() {
+                    let name = document.querySelector('#name');
+                    if (input.value) {
+                        name.innerHTML = `hello, ${input.value}`;
+                    }
+                    else {
+                        name.innerHTML = 'hello, whoever you are';
+                    }
+                }
+
+function listen() {
+                let input = document.querySelector('input');
+                input.addEventListener('keyup', greet );
+            }
+
+            document.addEventListener('DOMContentLoaded', listen );
+
+        </script>
+        <title>hello</title>
+    </head>
+    <body>
+        <form>
+            <input autocomplete="off" autofocus placeholder="Name" type="text">
+        </form>
+        <p id="name"></p>
+    </body>
+</html>

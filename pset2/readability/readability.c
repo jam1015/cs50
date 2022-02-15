@@ -1,6 +1,6 @@
+#include <cs50.h>
 #include <ctype.h>
 #include <math.h>
-#include <cs50.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -15,16 +15,16 @@ int main(void)
 	int word_count = count_words(text_in);
 	int sentence_count = count_sentences(text_in);
 
-    float L = (letter_count * 100.0) / word_count;
+	float L = (letter_count * 100.0) / word_count;
 	float S = (sentence_count * 100.0) / word_count;
-	float index = 0.0588 * L - 0.296 * S  - 15.8;
+	float index = 0.0588 * L - 0.296 * S - 15.8;
 	index = round(index);
 
-	if (index < 1) 
+	if (index < 1)
 	{
 		printf("Before Grade 1\n");
-	} 
-	else if ( index >= 16)
+	}
+	else if (index >= 16)
 	{
 		printf("Grade 16+\n");
 	}
@@ -42,14 +42,13 @@ int count_letters(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if(isalpha(char_used))
+		if (isalpha(char_used))
 		{
 			letter_count++;
 		}
 	}
 	return letter_count;
 }
-
 
 int count_words(string text_used)
 {
@@ -59,7 +58,7 @@ int count_words(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if(isspace(char_used))
+		if (isspace(char_used))
 		{
 			space_count++;
 		}
@@ -77,12 +76,11 @@ int count_sentences(string text_used)
 	{
 		char char_used = text_used[i];
 
-		if(char_used == '.' || char_used == '?' || char_used == '!')
+		if (char_used == '.' || char_used == '?' || char_used == '!')
 		{
 			sentence_count++;
 		}
 	}
 
 	return sentence_count;
-
 }

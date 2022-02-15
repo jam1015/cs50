@@ -1,0 +1,62 @@
+.centered
+{
+    text-align: center;
+}
+
+p
+{
+border: dotted red;
+outline: solid green;
+}
+
+.large
+{
+    font-size: large;
+}
+
+.medium
+{
+    font-size: medium;
+}
+
+.small
+{
+    font-size: small;
+}
+
+.right
+{
+    text-align: right;
+}
+
+a
+{
+    color: #00aa00;
+}
+
+a:hover
+{
+    text-decoration: underline overline;
+}
+
+#discography
+{
+    color: #ff00aa;
+	background-color: coral;
+	text-align: center;
+}
+
+img
+{
+border-radius: 200px;
+}
+
+img:hover
+{
+border-radius: 100px;
+}
+
+.rounded
+{
+border-radius: 200px;
+}
