@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Index
+{% endblock %}
+
+
+{% block main %}
+<table class="table">
+	<tr>
+		<th>Tx Type</th>
+		<th>Ticker Symbol</th>
+		<th>Number of Shares</th>
+		<th>Price</th>
+		<th>Time</th>
+	</tr>
+		{% for row in transactions %}
+		<tr>
+			<th>{{row["transaction_type"]}}</th>
+			<th>{{row["symbol"]}}</th>
+			<th>{{row["shares"]}}</th>
+			<th>{{row["price"]}}</th>
+			<th>{{row["time"]}}</th>
+		</tr>
+
+		{% endfor %}
+
+</table>
+{% endblock %}

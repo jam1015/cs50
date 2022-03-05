@@ -1,8 +1,9 @@
 ---
 title: "CS50 Lecture 6: Python"
 author: Jordan Mandel
-date: 2021_08_17
+date: \today
 geometry: margin=2.54cm
+paper: letter
 output: pdf_document
 ---
 
@@ -24,8 +25,8 @@ print(f"hello, {anser})
 ```
 
 ## if/else:
-```
-if x < y:
+```{.python}
+if x < y: #lala
 	print("x is less than y")
 elif x > y:
 	print("x is greater than y")

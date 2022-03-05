@@ -12,6 +12,7 @@ An `HTTP` request might look like
 ```
 GET / HTTP/1.1
 ...
+
 ```
 or can pass a parameter:
 
@@ -37,7 +38,7 @@ templates/
 
 Minimal flask web app:
 
-```
+```{.python}
 from flask import Flask
 app = Flask(__name__)
 @app.route("/")
@@ -51,7 +52,7 @@ Run with `flask run`
 Make it return HTML
 
 # Basic Program
-```
+```{.python}
 from flask import Flask, render_template
 app = Flask(__name__)
 @app.route("/") # use the following function for this route
@@ -62,7 +63,7 @@ def index():
 Then we put index.html into the templates directory.
 
 `index.html` might look like
-```
+```{.html}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -83,7 +84,7 @@ The route defines where the base file.
 Can go:
 
 Move the previous html into `greet.html` and make a new `index.html` file.
-```
+```{.html}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -103,7 +104,7 @@ The action is `/greet`. That takes us to the next page. The form submits the inp
 
 And change our python code:
 
-```
+```{.python}
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -120,13 +121,13 @@ Here the greet page gets the `name` arg from the form on the `index` page.
 
 The above form is not good because it puts user info in the URL.
 Should change to:
-```
+```{.html}
 <form action="/greet" method="post">
 ```
 
 And then change the controller to have `[POST]` as the method and `request.form` rather than `request.args`:
 
-```
+```{.python}
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -139,7 +140,7 @@ def greet(): # it is form.get here
 # Layouts/Templates
 Can make a reusable html template, `layout.html`:
 
-```
+```{.html}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -154,7 +155,7 @@ Can make a reusable html template, `layout.html`:
 
 Now we can use `layout.html` to extend `index.html`
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -169,7 +170,7 @@ Now we can use `layout.html` to extend `index.html`
 
 Can also change the `greet.html`:
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -181,7 +182,7 @@ Can also change the `greet.html`:
 
 # Post (again)
 can then condense the controller python code: put thme into one route:
-```
+```{.python}
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -193,7 +194,7 @@ Note that index has the default method, `GET`. Keep in mind `GET` is what you us
 
 Before the form's action was `/greet` but now it is just `/` because we are conditionaing on the request which can direct us to the correct page.
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -213,7 +214,7 @@ Viewport is just what we see in the web browser. Everything else, make the viewp
 
 Make basic layout:
 
-```
+```{.html}
 <!DOCTYPE  html>
 <html lang="en">
 	<head>
@@ -228,7 +229,7 @@ Make basic layout:
 
 Make basic flask file:
 
-```
+```{.python}
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -241,7 +242,7 @@ def index():
 
 Here is index.html:
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -263,7 +264,7 @@ Here is index.html:
 ```
 
 now we add registration content; have to include `POST`:
-```
+```{.python}
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -282,7 +283,7 @@ def register():
 
 Now we make `success.html`:
 
-```
+```{.html}
 {%extends "layout.html" %}
 {% block body %}
 You are registered!
@@ -291,7 +292,7 @@ You are registered!
 
 and `failure.html`
 
-```
+```{.html}
 {%extends "layout.html" %}
 {% block body %}
 You are not registered!
@@ -303,7 +304,7 @@ Problem here is we can hack the website and send an unsupported sport.
 
 So first we get rid of the hardcoded sports:
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -323,7 +324,7 @@ So first we get rid of the hardcoded sports:
 ```
 Then update the python (checking if the sport in the sport form is not in the global variable sports):
 
-```
+```{.python}
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -350,7 +351,7 @@ look above; we added  a `for` loop with Jinja.
 
 
 Can delete the `<select>` tags above and use ***radio*** buttons:
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -369,7 +370,7 @@ Can delete the `<select>` tags above and use ***radio*** buttons:
 # Actually Registering
 
 With error.html we have:
-```
+```{.html}
 {% extends "layout.html" %}
 {% block body %}
 {{message}}
@@ -379,7 +380,7 @@ With error.html we have:
 
 make a `registrants` array and other changes, including uding redirect.
 
-```
+```{.python}
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -419,7 +420,7 @@ def registrants():
 
 Then we make `registrants.html`.
 
-```
+```{.html}
 {% extends "layout.html" %}
 {% block body %}
 <h1> Registrants </h1>
@@ -446,7 +447,7 @@ Then we make `registrants.html`.
 
 We add to the above a registrants route:
 
-```
+```{.python}
 from cs50 import SQL
 from flask import Flask, render_template, request, redirect
 
@@ -483,7 +484,7 @@ def register():
 @app.route("/registrants")
 def registrants():
 	registrants = db.execute("SELECT * FROM registrants;")
-	return render_template("registrants.html", registrants=registrants[)
+	return render_template("registrants.html", registrants=registrants)
 ```
 Deleted `registrants` variable and `print` statement.
 Imported redirect that does an `HTTP 310` to go somewhere else. This gets rid of some redundant code.
@@ -492,7 +493,7 @@ Imported redirect that does an `HTTP 310` to go somewhere else. This gets rid of
 made an sqlite table in advance: ` CREATE TABLE registrants (id INTEGER, name TEXT NOT NULL, sport TEXT NOT NULL, PRIMARY KEY(id)); `
 
 We then have to update the registrants html:
-```
+```{.html}
 {% extends "layout.html" %}
 {% block body %}
 <h1> Registrants </h1>
@@ -504,7 +505,7 @@ We then have to update the registrants html:
 		</tr>
 	</thead>
 	<tbody>
-	{% for row in rows %}
+	{% for row in registrants %}
 		<tr>
 			<td> {{row.name}} </td>
 			<td> {{row.sport}} </td>
@@ -517,7 +518,7 @@ We then have to update the registrants html:
 
 # Adding Email (getting rid of some SQL)
 
-```
+```{.python}
 import os
 # getting rid of SQL
 from flask import Flask, render_template, request, redirect
@@ -566,7 +567,7 @@ def register():
 
 Update the HTML to reflect the changes:
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -624,7 +625,7 @@ Flask-Session
 
 Update `template.html`:
 
-```
+```{.html}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -640,8 +641,8 @@ Update `template.html`:
 
 
 then make a flask app with login:
-```
-from flask inport Falask, redirect, render_template, request, session
+```{.python}
+from flask inport Flask, redirect, render_template, request, session
 from flask_session import Session
 
 app = Flask(__name__)
@@ -672,7 +673,7 @@ def logout():
 
 session is global and unique to each user.
 Here is a login form:
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -687,7 +688,7 @@ Here is a login form:
 
 index.html, responsive to login:
 
-```
+```{.html}
 {% extends "layout.html" %}
 
 {% block body %}
@@ -702,15 +703,353 @@ index.html, responsive to login:
 ```
 
 If we go to `/` without loging in we get `302` redirected to the login page.
-If we do login: we can see it happening in the network tag: in request headers, requesting `/`, but also presentintg `Cookie: session=3545620...`
+If we do login: we can see it happening in the network tag: in request headers, requesting `/`, but also presentintg `Cookie: session=3545620`
 
 
 # Store
-Look st source code
 
+## `store.db`:
+has `.schema`:
+
+```{.sql}
+CREATE TABLE books (id INTEGER, title TEXT NOT NULL, PRIMARY KEY(id));
+```
+
+
+## `requirements.txt`:
+
+```
+Flask
+Flask-Session
+```
+
+
+## `application.py`:
+
+```{.python}
+from cs50 import SQL
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
+```
+
+# Configure app
+```{.python}
+app = Flask(__name__)
+```
+
+# Connect to database
+```{.python}
+db = SQL("sqlite:///store.db")
+
+# Configure sessions
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+
+@app.route("/")
+def index():
+	books = db.execute("SELECT * FROM books")
+	return render_template("books.html", books=books)
+
+
+@app.route("/cart", methods=["GET", "POST"])
+def cart():
+
+	# Ensure cart exists
+	if "cart" not in session:
+		session["cart"] = []
+
+	# POST
+	if request.method == "POST":
+		id = request.form.get("id")
+		if id:
+			session["cart"].append(id)
+		return redirect("/cart")
+
+	# GET
+	books = db.execute("SELECT * FROM books WHERE id IN (?)", session["cart"])
+	return render_template("cart.html", books=books)
+```
+
+## `templates` has:
+
+### `layout.html`
+
+```{.html}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width"/>
+        <title>store</title>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
+```
+
+### `books.html`
+
+```{.html}
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Books</h1>
+    {% for book in books %}
+        <h2>{{ book.title }}</h2>
+        <form action="/cart" method="post">
+            <input name="id" type="hidden" value="{{ book.id }}">
+            <input type="submit" value="Add to Cart">
+        </form>
+    {% endfor %}
+
+{% endblock %}
+```
+
+### `cart.html`
+
+```{.html}
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Cart</h1>
+    <ol>
+        {% for book in books %}
+            <li>{{ book.title }}</li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}
+```
+
+# Shows
+There are three versions:
+
+## For all of them we have:
+### `shows.db`
+
+`.schema` returns `CREATE TABLE shows (id INTEGER, title TEXT NOT NULL, PRIMARY KEY(id));`
+
+###  `requirements.txt`
+
+```
+cs50
+Flask
+```
+
+## shows0
+
+### `application.py`
+
+
+```{.python}
+#searches for shows
+from cs50 import SQL
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+db = SQL("sqlite:///shows.db")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+    shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + request.args.get("q") + "%")
+    return render_template("search.html", shows=shows)
+```
+
+### `layout.html`
+
+```{.html}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>shows</title>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
+```
+
+### `index.html`
+
+```{.html}
+{% extends "layout.html" %}
+
+{% block body %}
+    <form action="/search" method="get">
+        <input autocomplete="off" autofocus name="q" placeholder="Query" type="search">
+        <input type="submit" value="Search">
+    </form>
+{% endblock %}
+```
+
+### `search.html`
+
+```{.html}
+{% extends "layout.html" %}
+
+{% block body %}
+    <ul>
+        {% for show in shows %}
+            <li>{{ show.title }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+```
+
+## shows1; more of an intermediate phas
+
+### `application.py`
+
+```{.python}
+# Searches for shows using Ajax
+
+from cs50 import SQL
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+db = SQL("sqlite:///shows.db")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+    q = request.args.get("q")
+    if q:
+        shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + q + "%")
+    else:
+        shows = []
+    return render_template("search.html", shows=shows)
+```
+
+### `index.html`
+
+
+```{.html}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>shows</title>
+    </head>
+    <body>
+
+        <input autocomplete="off" autofocus placeholder="Query" type="search">
+
+        <ul></ul>
+
+        <script crossorigin="anonymous" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+    
+            let input = document.querySelector('input');
+            input.addEventListener('keyup', function() {
+                $.get('/search?q=' + input.value, function(shows) { //statnds for jQuery.get
+                    document.querySelector('ul').innerHTML = shows; 
+                });
+            });
+
+        </script>
+
+    </body>
+</html>
+```
+
+### `search.html`
+
+```{.html}
+{% for show in shows %}
+    <li>{{ show.title }}</li>
+{% endfor %}
+```
+
+## shows2
+
+### `application.py`
+
+```{.python}
+# Searches for shows using Ajax with JSON
+
+from cs50 import SQL
+from flask import Flask, jsonify, render_template, request
+
+app = Flask(__name__)
+
+db = SQL("sqlite:///shows.db")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+    q = request.args.get("q")
+    if q:
+        shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + q + "%")
+    else:
+        shows = []
+    return jsonify(shows)
+```
+
+### `index.html`
+
+```{.html}
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta name="viewport" content="initial-scale=1, width=device-width">
+		<title>shows</title>
+	</head>
+	<body>
+
+		<input autocomplete="off" autofocus placeholder="Query" type="text">
+
+		<ul></ul>
+
+		<script crossorigin="anonymous" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script>
+	
+			let input = document.querySelector('input');
+			input.addEventListener('keyup', function() {
+				$.get('/search?q=' + input.value, function(shows) { //the webpage makes another http request; calls the search route
+					let html = '';
+					for (let id in shows) {
+						let title = shows[id].title.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
+						html += '<li>' + title + '</li>';
+					}
+					document.querySelector('ul').innerHTML = html;
+				});
+			});
+
+		</script>
+
+	</body>
+</html>
+```
 
 # Flask Short
-```
+```{.python}
 from flask import Flask
 from datetime import datetime
 from pytz import timezone
@@ -725,7 +1064,8 @@ def time():
 
 
 Another example:
-```
+
+```{.python}
 @app.route("/")
 def index():
 	return "You are at the index page!"
@@ -744,7 +1084,7 @@ flask run
 
 ## Pass data via `GET`
 Can do it via URL:
-```
+```{.python}
 @app.route("/show/<number>")
 def show(number):
 	return "You passed in {}".format(number)
@@ -754,7 +1094,7 @@ def show(number):
 
 Here is an example:
 
-```
+```{.python}
 @app.route("/login", methods=['GET', 'POST'])
 def login():
 	if not request.form.get("username")
@@ -763,7 +1103,7 @@ def login():
 
 # Vary based on Request type
 
-```
+```{.python}
 @app.route("/login", methods=['GET', 'POST'])
 def login()
 	if request.method == POST:
@@ -771,7 +1111,7 @@ def login()
 	else:
 	# do a different thing
 ```
-- Things I should be aware of: `url_for()`, `redirect()`, `session()`, `render_teplate()`.
+- Things I should be aware of: `url_for()`: go to url for login, `redirect(): redirect to different route`, `session()`: session data for login, `render_teplate()`.
 - Flask quickstart: `http://flask.pocoo.org/docs/0.12/quickstart`
 - Jinja quickstart: `http://jinja.pocoo.org`
 
@@ -779,7 +1119,7 @@ def login()
 Making things happen on the server
 There is a Javascript object called `XMLHttpRequest`. Make it like:
 
-```
+```{.javasscript}
 var xhttp = new XMLHttpRequest();
 ```
 
@@ -802,3 +1142,33 @@ function ajax_request(argument)
 ```
 
 This will usually be written in `jquery`: `http://api.jquery.com/jquery.ajax` to learn how
+
+## Ajax Example
+```{.html}
+<form>
+	<select name="staff" onchange="cs50Info(this.value)">
+<optionvalue="haha">haha</option>
+<optionvalue="lala">lala</option>
+	</select>
+<form>
+```
+
+
+```{.javasscript}
+function cs50Info(name){
+if (name == "") { return;}
+
+//make new ajax request
+let ajax = new XMLHttpRequest();
+
+
+// action for callback
+ajax.onreadystatechange = function() {
+if (ajax.onreadystatechange == 4 && ajax.status == 200){
+$(`#infodiv`).html(ajax.responseText);
+}
+}
+
+ajax.open('GET', name, '.html', true);
+ajax.send();
+```

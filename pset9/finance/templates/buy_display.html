@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Index
+{% endblock %}
+
+{% block main %}
+	Successfully bought: <br>
+		<p>name: {{name}} <br></p>
+		<p>ticker: {{symbol}} <br></p>
+		<p>price: {{price}} <br></p>
+		<p>number of shares: {{num_shares}} <br></p>
+<form action="/buy">
+        <button class="btn btn-primary" type="submit">Buy Another Stonke</button>
+    </form>
+
+{% endblock %}

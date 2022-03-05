@@ -19,7 +19,7 @@
                 $.get('/search?q=' + input.value, function(shows) {
                     let html = '';
                     for (let id in shows) {
-                        let title = shows[id].title;
+                        let title = shows[id].title.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
                         html += '<li>' + title + '</li>';
                     }
                     document.querySelector('ul').innerHTML = html;

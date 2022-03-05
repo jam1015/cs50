@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	buy
+{% endblock %}
+
+{% block main %}
+    <form action="/sell" method="post">
+        <div class="mb-3">
+			<select name="symbol"> <!-- have to check on backend if user doesn't have this stock or if blank, then render apology -->
+				{% for share_type in shares %}
+					{% if share_type.sum_shares > 0 %}
+					<option value={{share_type.symbol}}>{{share_type.symbol}}</option>
+					{% endif %}
+				{% endfor %}
+				
+			</select>
+            <input type="number" name="shares" placeholder="how many shares">
+        </div>
+        <button class="btn btn-primary" type="submit">Sell</button>
+    </form>
+{% endblock %}
