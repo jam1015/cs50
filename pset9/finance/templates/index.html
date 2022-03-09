@@ -8,22 +8,79 @@
 {% block main %}
 <table class="table">
 	<tr>
-		<th>Tx Type</th>
-		<th>Ticker Symbol</th>
+		<th></th>
+		<th>Symbol</th>
 		<th>Number of Shares</th>
 		<th>Price</th>
-		<th>Time</th>
+		<th>Total Value</th>
+		<th>Buy</th>
+		<th>Sell</th>
 	</tr>
-		{% for row in transactions %}
+	<tr class="table-secondary">
+		<td>Stock Holdings</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+	{% for row in holdings %}
 		<tr>
-			<th>{{row["transaction_type"]}}</th>
-			<th>{{row["symbol"]}}</th>
-			<th>{{row["shares"]}}</th>
-			<th>{{row["price"]}}</th>
-			<th>{{row["time"]}}</th>
+			<td></td>
+			<td>{{row["symbol"]}}</td>
+			<td>{{row["shares"]}}</td>
+			<td>{{row["price"] | usd }}</td>
+			<td>{{row["total_price"] | usd }}</td>
+			<td>
+	<form action="/buy" method="post">
+			<input type="number" name="shares" placeholder="how many shares">
+			<input type="hidden" name="symbol" value={{row["symbol"]}}>
+		<button class="btn btn-primary" type="submit">Buy</button>
+		</form>
+			</td>
+			<td>
+	<form action="/sell" method="post">
+			<input type="number" name="shares" placeholder="how many shares">
+			<input type="hidden" name="symbol" value={{row["symbol"]}}>
+		<button class="btn btn-primary" type="submit">Sell</button>
+		</form>
+			</td>
 		</tr>
 
-		{% endfor %}
+	{% endfor %}
+
+	<tr class="table-secondary">
+		<td>Cash Holdings</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>{{cash | usd}}</td>
+	</tr>
+	<tr class="table-secondary">
+		<td>Total Worth</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>{{total_worth | usd}}</td>
+	</tr>
 
 </table>
 {% endblock %}

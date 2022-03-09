@@ -52,12 +52,27 @@ if not os.environ.get("API_KEY"):
 @login_required
 def index():
 	"""Show portfolio of stocks"""
-	hist_dict = db.execute("SELECT * FROM transactions where id=? GROUP BY symbol HAVING SUM(shares) > 0", session["user_id"])
+	full_dict = db.execute("SELECT * FROM transactions where id=?", session["user_id"])
+	holdings_dict = db.execute("SELECT symbol, SUM(shares) as shares FROM transactions where id=? GROUP BY symbol HAVING SUM(shares) > 0", session["user_id"])
+
 	cash = db.execute("SELECT cash FROM users where id=?", session["user_id"])
-	breakpoint()
+	cash = cash[0]["cash"]
+	total_worth = cash
+	for stock in holdings_dict:
+		quote_dict = lookup(stock["symbol"])
+		price = quote_dict["price"]
+		total_price = price * stock["shares"]
+		total_worth = total_worth + total_price
+		stock["price"] = price
+		stock["total_price"] = total_price
+#	breakpoint()
+	return render_template("index.html", holdings = holdings_dict, cash = cash, total_worth = total_worth)
+
+
+
 
 #	quote_dict = lookup(symbol)
-#	price=usd(quote_dict["price"]
+	
 #	symbol=quote_dict["symbol"]
 #	name=quote_dict["name"]
 #
@@ -151,13 +166,28 @@ def buy():
 
 
 # getting the number of shares input
-		shares = int(request.form.get("shares"))
-		negative_shares = shares < 1
-		shares_int_type = isinstance(shares, int)
+		shares = request.form.get("shares")
 
-		if negative_shares or (not shares_int_type and not shares_int_value):
-			return apology("need positive integer number of shares")
+		try:
+			shares = float(shares)
+		except:
+			return apology("shares must be numeric", 400)
+
+		is_int = shares.is_integer()
+
+
+		if not is_int:
+			return apology("need integer", 400)
+
+		negative_shares = shares < 0
+		if negative_shares:
+			return apology("shares should be positive", 400)
+
+		
 		quote_dict = lookup(symbol)
+		if quote_dict is None:
+			return apology("you messed up! put in a correct ticker symbol", 400)
+
 		share_price = quote_dict["price"]
 
 		total_price = shares * share_price
@@ -196,12 +226,13 @@ def quote():
 		symbol = request.form.get("symbol")
 
 		if not symbol:
-			return redirect("/quote")
+			return apology("you messed up! put in a correct ticker symbol", 400)
 
 		quote_dict = lookup(symbol)
 
 		if quote_dict is None:
-			return redirect("/quote")
+			return apology("you messed up! put in a correct ticker symbol", 400)
+			
 
 		return render_template("quote_display.html",
 		                       price=usd(quote_dict["price"]),
@@ -215,18 +246,18 @@ def register():
 	if request.method == "POST":
 
 		if not request.form.get("username"):
-			return apology("must provide username", 403)
+			return apology("must provide username", 400)
 
 		# Ensure password was submitted
 		elif not request.form.get("password"):
-			return apology("must provide password", 403)
+			return apology("must provide password", 400)
 
 		un = request.form.get("username")
 		pw = request.form.get("password")
 		confirmation = request.form.get("confirmation")
 
 		if pw != confirmation:
-			return apology("passwords don't match", 403)
+			return apology("passwords don't match", 400)
 		hash = generate_password_hash(pw)
 
 		print(hash)
@@ -234,7 +265,7 @@ def register():
 		rows = db.execute("SELECT * FROM users WHERE username = ?", un)
 
 		if len(rows) != 0:
-			return apology("username already exists", 403)
+			return apology("username already exists", 400)
 
 		db.execute("INSERT INTO  users  (username, hash) VALUES(?,?)", un,
 		           hash)
@@ -243,7 +274,7 @@ def register():
 		rows = db.execute("SELECT * FROM users WHERE username = ?", un)
 
 		if len(rows) != 1 or not check_password_hash(rows[0]["hash"], pw):
-			return apology("invalid username and/or password", 403)
+			return apology("invalid username and/or password", 400)
 
 		# Remember which user has logged in
 		session["user_id"] = rows[0]["id"]
@@ -309,7 +340,7 @@ def sell():
 
 		if shares_available < shares:
 			return apology(
-			    "you don't have enough of that stock to sell that many shares")
+			    "you don't have enough of that stock to sell that many shares", 400)
 
 		db.execute(
 		    "INSERT INTO  transactions  (id, price, symbol, shares, time) VALUES( ?, ?, ?, ?, ?)",
